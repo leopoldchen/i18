@@ -2,6 +2,7 @@ module I18n
 	require "json"
 	# require "go"
 	def db_i18n(method, *args)
+		# include Del
 		args[0].each do |language|
 		# if /(^\w+)_([a-z]+)/.match(method)
 			# attribute = $1
@@ -27,7 +28,7 @@ module I18n
 		    			str = arr.join(",")
 				    	# self.record = "{\"#{attribute}\":{\"#{language}\":\"#{args}\"}},"
 				    	@s_result.classid = self.id#obj.id 
-				    	@s_result.classname = self.class.name#obj.class.name
+				    	@s_result.classname = self.class.name #obj.class.name
 				    	@s_result.property = method.to_s
 				    	@s_result.jsoncontent = str
 				    	@s_result.save
@@ -52,19 +53,38 @@ module I18n
 						    	end
 						    	return @var
 								else
-								  	return ""
-								  end
+								 	return ""
+								end
 					    end
 				    # self.send method
-				    self.send :define_method, method do #get_value_with_i18n.locale
-				    	locale = I18n.locale.to_s
-				    		self.send  method.to_s+"_"+locale
-				    end
+				    # delete_method = "delete"
+				    # 	self.send :define_method, delete_method do
+				    # 		if !(@s_result = Go.where(:classid => self.id, :classname => self.class.name)).blank?
+				    # 			@s_result.each do |result|
+				    # 				result.delete
+				    # 			end
+				    # 		end
+				    # 		self.delete
+				    # 	end
 			 	 # end
 
 			# else
 			# 		super
 		  # end
 		end
+			self.send :define_method, method do #get_value_with_i18n.locale
+	    	locale = I18n.locale.to_s
+	    		self.send  method.to_s+"_"+locale
+	    end
+	end
+end
+module Del
+	def delete
+		if !(@s_result = Go.where(:classid => self.id, :classname => self.class.name)).blank?
+			@s_result.each do |result|
+				result.delete
+			end
+		end
+		super
 	end
 end
