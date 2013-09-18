@@ -1,3 +1,4 @@
 class Go < ActiveRecord::Base
-  attr_accessible :classid, :classname, :property, :jsoncontent, :property_map
+  attr_accessible :classid, :classname, :property, :jsoncontent
+  attr_accessor :property_map
 end
